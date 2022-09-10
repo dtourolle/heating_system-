@@ -34,9 +34,27 @@ The set points were user determined either by an app or via an customized Lillyg
 ![](pictures/Screenshot_MQTT Dash.jpg)
 ![](pictures/home_watch.jpg)
 
-This all comes together in the following system:
+This all comes together in the following system, where the connections between the elements are shown.
 
 ![](pictures/heating_system_flow_chart.png)
 
+The thermometer has a unidirectional connection to the system, it simply sends the temperature (and humidity) to the MQTT server on an roughly 1 minute basis. The MQTT server is also connected to by the [radiator_server.py](src/server/radiator_server.py) script, which stores the values in a database (very useful for tuning the system) and also orchestrates the opening and closing of the valves and the activation of the boiler, again by posting to an MQTT server. The valves and thermostat listen to this MQTT server and behave accordingly, the thermostat also uses the MQTT server to store it's state, so should it reboot it will reload the currently set value. The valves connect to show the set points and current temperature. Finally the user can set the settings with either the watch or the android application.
+
+A recording for a single room will look like this:
+
+![](pictures/day_chart.png)
+
+In the morning the system turns one at 7am and heats the room to the set point of about 18.5 degrees. This room likely wasn't used that day until about 18:00 when the set point was evidently changed to about 21 degrees. The system can be seen opening and closing the valve, while the temperature overshoots by about 1.5 degree each cycle.
+
+The same plot can be made for all rooms simultaneously.
+![](pictures/typical_day_all_rooms.png)
+
+This is a recording of a typical day and the differences in the valve behaviour for the different rooms underlines the initial issue with the heating system. As the valves were not thermostatic some of the rooms would have been saunas with the heating make the coldest room comfortable, or the coldest room would have likely been bellow 16 degrees with the warmest at 21.
+
+The other big advantage of the system was the ability to just turn down rooms that were not in use. This is an image from a weekend where lots of time was spend in the kitchen and watching TV.
+
+![](pictures/weekend_all_rooms.png)
+
+The guestroom and workshop have been turned down during the day and remain cool, or at least unheated. While the kitchen and tv area are warmed. 
 
 [historic Dutch data](https://daggegevens.knmi.nl/klimatologie/uurgegevens)
