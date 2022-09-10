@@ -84,6 +84,21 @@ The assembly consisted of [a case](/stl/thermostat_controller/case_5.stl) contai
 
 These used a DF Robot ESP32 Firebeetle board, connected to an DHT22, a 18650 battery, and a 30ma Solar panel. Unfortunaly I have not been able to track down the STL files and the original CAD files were made using an educational licensed Siemens NX. I am more than happy to re-create them in FreeCAD on demand.
 
+#### Flashing the devices
+All of the devices run micropython, if the latest version does not work these were flashed with versions from spring 2021. Once the devices have micropython copy the source code across and make sure you convert the "example_settings.py" to a "settings.py".
+
+### Setting up the server
+
+This project runs on a Raspberry Pi, it is very light weight. There are some software requirements that your package manager can solve:
+
+- [mosquitto](https://mosquitto.org/) (or another MQTT broker)
+- Python >3.5
+- mariaDB
+
+Once these are setup all you need to do make a "config.py" out of the [example_config.py](/src/server/example_config.py) and run the [main script](src/server/radiator_server.py). Ideally this should be configured as a systemd module or a chronjob.
+
+There will likely be teething issues, either from this software or from things overlook during the setup. Most likely the firewall will be blocking MQTT and mariaDB when this first starts, check for your linux distro how to open the ports. Another issue which might occur is if you do not provide the raspberry pi with a static IP address, if during reboot it looses it's address this will be a huge pain, so ensure it is indeed static to start with. Finally when the MQTT server restarts it is advised to restart all the devices manually with a power cycle, they are configured to reconnect on failure but this is the safest option.
+
 
 
 [historic Dutch data](https://daggegevens.knmi.nl/klimatologie/uurgegevens)
