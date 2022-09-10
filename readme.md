@@ -57,4 +57,35 @@ The other big advantage of the system was the ability to just turn down rooms th
 
 The guestroom and workshop have been turned down during the day and remain cool, or at least unheated. While the kitchen and tv area are warmed. 
 
+## How to use this
+
+### building the devices
+The devices are all 3d printed, the stl files can be found [here](stl), while for the devices designed in FreeCAD the drawings are [here](CAD), I am more than wiling to convert the missing drawings to FreeCAD if there is a request. All of the electronics rely on WEMOS ESP32 board, and 28byj stepper motor with drivers.
+
+#### Radiator Valve
+For the valve controller the following assembly is required.
+
+![](pictures/exploded.png)
+
+The motor and [wall bracket](stl/radiator_valve/bracket.stl) should be mounted on the [carrier base](stl/radiator_valve/carrier_base.stl) using m3 screw. The bracket might need to be pre-tapped depending on the printer settings. The ESP32 and stepper driver can be mated at the GPIO see [here](src/valves/main.py) for port numbers. For the [OLD display](https://www.waveshare.com/0.91inch-oled-module.htm) depending on the version used you will need to solder wires on with about 8cm in length. I used the cheapest version from amazon and they worked fine. This also needs to be wired to the ESP32 for GPIO see [here](src/valves/main.py).  THe screen can then be secured in place within the [upper case](stl/radiator_valve/case.stl) with scotch tape and/or glue. The ESP32 can be power via USB and the VCC of the board should be connected to the stepper motor.
+The planetary gear box should slot together, if it is a little tight then twisting it during assembly will help get it together. Using the ESP32 test the rotation of the gear box and the torque, a tight gear box might need some lubrication, also when applying a resistance check if the gears try to eject themselves from the gear box, if this happens it might be worth flipping some of the [planet gears](stl/radiator_valve/planet_gear.stl), as the 3d printing process might have left them tapered which causes them to push out of the [ring gear](stl/radiator_valve/connector.stl).
+
+The whole lower assembly can be mounted on the radiator valve, mark the holes on the wall for the [wall bracket](stl/radiator_valve/bracket.stl) for drilling and attaching with rawlplugs and screws. Once the lower assembly is attached the [upper case](stl/radiator_valve/case.stl) assembly can be seated in place. If needed some soft putty of scotch can be used to secure it in place.
+
+It is worth taking time to measure the distance between the wall and the radiator valve, the adjust the [wall bracket](stl/radiator_valve/bracket.stl) either by stretching the mesh or using the [free cad file](CAD/radiator_valve/connector.FCStd).
+
+#### Thermostat control
+
+The thermostat control was electronically very similar to the radiator valve, this consisted of a ESP32, in this case it was a raw module, that was all I had available and I would recommend a WEMOS ESP32 or other such dev board, the software can be found [here](src/thermostat/).
+
+The assembly consisted of [a case](/stl/thermostat_controller/case_5.stl) containing the electronics and the motor. While gears were attached to the [motor](/stl/thermostat_controller/gear_1.stl) and the [thermostat](/stl/thermostat_controller/wheel_1.stl). The thermostat gear was secured using white re-usable adhesive putty, while the drive gear was press fitted.
+
+#### Thermometers
+
+These used a DF Robot ESP32 Firebeetle board, connected to an DHT22, a 18650 battery, and a 30ma Solar panel. Unfortunaly I have not been able to track down the STL files and the original CAD files were made using an educational licensed Siemens NX. I am more than happy to re-create them in FreeCAD on demand.
+
+
+
 [historic Dutch data](https://daggegevens.knmi.nl/klimatologie/uurgegevens)
+
+
